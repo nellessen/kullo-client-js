@@ -7,7 +7,7 @@ function Kullo() {
     this.public_key = null;
     this.private_key = null;
     this.aes_key = null;
-    this.key_length = 1024;
+    this.key_length = 1536; // At least 1536.
     this.e = 65537; // Hex value 10001
     
     /**
@@ -29,7 +29,6 @@ function Kullo() {
         var before = new Date();
         
         var rsa = new RSAKey();
-        //var dr = document.rsatest;
         rsa.generate(this.key_length.toString(),this.e.toString(16));
         this.public_key = {
                 e: this.e,
@@ -89,9 +88,6 @@ function Kullo() {
         // Decode to BigInteger.
         signature = parseBigInt(signature, 16);
         
-        console.log("Verifying signature...", str);
-        var before = new Date();
-        
         // Hash string using Google's CryptoJS lib.
         var hash_array = CryptoJS.SHA1(str);
         var hash_hex = hash_array.toString(CryptoJS.enc.Hex);
@@ -103,10 +99,7 @@ function Kullo() {
         rsa.e = this.public_key.e;
         
         var calculated_hash_bigint = rsa.doPublic(signature);
-        
-        var after = new Date();
-        console.log("Time: " + (after - before) + "ms");
-        
+        //console.log("Verifying signature...", calculated_hash_bigint, hash_bigint);
         return calculated_hash_bigint.compareTo(hash_bigint) == 0;
     };
     
@@ -117,55 +110,33 @@ function Kullo() {
      * @returns {String} The PKCS#1 RSA encrypted message as hex string.
      */
     this.encrypt_rsa = function(message) {
-        // Decode to BigInteger.
-        //message = parseBigInt(message, 16);
-        
-        //console.log("Encrypt string...", message);
-        var before = new Date();
-        
         // RSA Encrypt using rsa2.js lib.
         var rsa = new RSAKey();
         rsa.n = this.public_key.N;
         rsa.e = this.public_key.e;
+        
+        console.log(this.public_key);
 
         //var encrypted_bigint = rsa.doPublic(message);
         var encrypted = rsa.encrypt(message);
-        
-        var after = new Date();
-        //console.log("Time: " + (after - before) + "ms");
-        
-        //return encrypted_bigint.toString(16);
         return encrypted;
     };
     
     /**
-     * RSA-decrypts a encrypted message using the private key this.private_key
-     * and the exponent this.e.
+     * RSA-decrypts a encrypted message using the private key this.private_key.
      * 
      * @param {String} crypto The PKCS#1 RSA encrypted message to decrypt as hex string.
      * @returns {String} The decrypted message.
      */
     this.decrypt_rsa = function(crypto) {
-        // Decode to BigInteger.
-        //crypto = parseBigInt(crypto, 16);
-        
-        //console.log("Encrypt string...", str);
-        var before = new Date();
-        
         // RSA Decrypt using rsa2.js lib.
         var rsa = new RSAKey();
         rsa.n = this.private_key.N;
-        rsa.e = this.e;
         rsa.d = this.private_key.d;
         // @todo: We could increase performance if p and q are still available.
         
         //var decrypted_bigint = rsa.doPrivate(crypto);
         var decrypted = rsa.decrypt(crypto);
-        
-        var after = new Date();
-        //console.log("Time: " + (after - before) + "ms");
-        
-        //return decrypted_bigint.toString(16);
         return decrypted;
     };
     
@@ -214,5 +185,89 @@ function Kullo() {
         console.log("Message:", message, "Key", key, "IV", iv);
         var decrypted = CryptoJS.AES.decrypt(message, key, {iv: iv});
         return decrypted.toString(CryptoJS.enc.Utf8);
+    };
+    
+    /**
+     * Composes an envelope for a given message body and a recepient.
+     * 
+     * You must have set public key this.public_key to the receivers public key
+     * and the private key this.private_key to the sender's private key, the 
+     * AES keys this.aes_key and this.aes_iv.
+     */
+    this.composeMessage = function(receiver, body) {
+        //var hash = this.sign_string(body);
+        var signature = this.sign_string(body);
+        
+        var symmetric = '<?xml version="1.0" encoding="UTF-8"?>';
+        symmetric += '<symmetric>';
+        symmetric += '<algo>aes-128-cbc</algo>';
+        symmetric += '<key>';
+        symmetric += this.aes_key;
+        symmetric += '</key>';
+        symmetric += '<iv>';
+        symmetric += this.aes_iv;
+        symmetric += '</iv>';
+        symmetric += '</symmetric>';
+        symmetric = this.encrypt_rsa(symmetric);
+        
+        
+        var messageEncrypted = '<?xml version="1.0" encoding="UTF-8"?>';
+        messageEncrypted += '<messageContainer>';
+        messageEncrypted += '<message transfer-encoding="b64">';
+        messageEncrypted += body;
+        messageEncrypted += '</message>';
+        //messageEncrypted += '<messageHash algo="sha1">';
+        //messageEncrypted += hash;
+        //messageEncrypted += '</messageHash>';
+        messageEncrypted += '<messageSignature transfer-encoding="b64">';
+        messageEncrypted += signature;
+        messageEncrypted += '</messageSignature>';
+        messageEncrypted += '</messageContainer>';
+        messageEncrypted = this.encrypt_aes(messageEncrypted);
+        
+        var xml = '<?xml version="1.0" encoding="UTF-8"?>';
+        xml += '<envelope>';
+        xml += '<receiver>' + receiver + '</receiver>';
+        xml += '<symmetric>' + symmetric + '</symmetric>';
+        xml += '<messageContainer>';
+        xml += messageEncrypted;
+        xml += '</messageContainer>';
+        xml += '</envelope>';
+        
+        return xml;
+    };
+    
+    /**
+     * Decomposes an envelope into the containing parts and decodes the
+     * compressed contents, verifies the sender's signature and returns the
+     * message body in case everything is fine and False otherwise.
+     * 
+     * You must have set private key this.private_key to the receiver's private
+     * keys and the public keys to the sender's public key.
+     */
+    this.decomposeMessage = function(str) {
+        try{
+            var xmlDoc = $.parseXML(str);
+            var $xml = $( xmlDoc );
+            var symmetric = $xml.find( "symmetric" ).text();
+            symmetric = this.decrypt_rsa(symmetric);
+            var symdoc = $( $.parseXML(symmetric) );
+            var key = symdoc.find("key").text();
+            var iv = symdoc.find("iv").text();
+            this.aes_key = key;
+            this.aes_iv = iv;
+            var message_encrypted = $xml.find( "messageContainer" ).text();
+            var message_decrypted = this.decrypt_aes(message_encrypted);
+            var messagedoc = $( $.parseXML(message_decrypted) );
+            var message = messagedoc.find("message").text();
+            var signature = messagedoc.find("messageSignature").text();
+            var valid = this.verify_signiture(message, signature);
+            if (!valid) return false;
+            
+            return message;
+        }
+        catch(err){
+            return false;
+        }
     };
 }
