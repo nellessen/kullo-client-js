@@ -187,7 +187,7 @@ function Kullo() {
     this.decrypt_aes = function(message) {
         var key = CryptoJS.enc.Hex.parse(this.aes_key);
         var iv = CryptoJS.enc.Hex.parse(this.aes_iv);
-        console.log("Message:", message, "Key", key, "IV", iv);
+        //console.log("Message:", message, "Key", key, "IV", iv);
         var decrypted = CryptoJS.AES.decrypt(message, key, {iv: iv});
         return decrypted.toString(CryptoJS.enc.Utf8);
     };
@@ -252,7 +252,8 @@ function Kullo() {
      */
     this.decomposeMessage = function(str) {
         try{
-            var xmlDoc = $.parseXML(str);
+            if (typeof(str) == "string") var xmlDoc = $.parseXML(str);
+            else xmlDoc = str;
             var $xml = $( xmlDoc );
             var symmetric = $xml.find( "symmetric" ).text();
             symmetric = this.decrypt_rsa(symmetric);

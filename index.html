@@ -37,36 +37,56 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#">Kullo</a>
+                    <a class="brand" href="#" id="nav-brand">Kullo</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#about">About</a></li>
-                            <li><a href="#contact">Contact</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li class="nav-header">Nav header</li>
-                                    <li><a href="#">Separated link</a></li>
-                                    <li><a href="#">One more separated link</a></li>
-                                </ul>
-                            </li>
+                            <li class="active" id="nav-home"><a href="#">Home</a></li>
+                            <li><a href="http://www.kullo.org/" target="_blank" >Kullo.org</a></li>
+                            <li disabled="disabled" id="nav-logout" style="display: none; "><a href="#">Logout</a></li>
+                            <li disabled="disabled" id="nav-compose" style="display: none; "><a href="#">Compose</a></li>
+                            <li disabled="disabled" id="nav-inbox" style="display: none; "><a href="#">Inbox</a></li>
+                            <li disabled="disabled" id="nav-generate" style="display: none; "><a href="#">Generate Keys</a></li>
+                            <li><a href="https://kullo.net:3546/thanks.html" target="_blank">Thanks</a></li>
                         </ul>
                         <form id="login-form" class="navbar-form pull-right">
-                            <input class="span2 address" type="text" placeholder="Kullo Address">
-                            <input class="span2 password" type="password" placeholder="Password">
+                            <input class="span2 address" type="text" placeholder="Kullo Address" value="davidn!kullo.net">
+                            <input class="span2 password" type="password" placeholder="Password" value="test123">
                             <button type="submit" class="btn">Sign in</button>
                         </form>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
         </div>
+        
+        
+        <div class="container page" id="page-inbox">
+            <h2>Inbox</h2>
+            <ul id="inbox">
+            
+            </ul>
+        </div>
+        
+        
+        <div class="container page" id="page-compose">
+        
+          <form class="bs-docs-example" id="compose-form">
+              <fieldset>
+                <legend>Recipient</legend><br>
+                <input value="davidn!kullo.net" class="recipient" name="recipient" type="text" placeholder="Kullo Address… (name!server.net)"  style="width: 90%;">
+                
+                <legend>Message</legend>
+                <textarea class="message" name="message" rows="10"  style="width: 90%;"></textarea>
+                
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="button" class="btn cancel">Cancel</button>
+                </div>
+              </fieldset>
+            </form>
+        
+        </div>
 
-        <div class="container">
+        <div class="container page" id="page-home">
 
             <!-- Main hero unit for a primary marketing message or call to action -->
             <div class="hero-unit clearfix">
@@ -81,18 +101,19 @@
             <!-- Example row of columns -->
             <div class="row">
                 <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <h2>STRONG ENCRYPTION</h2>
+                    <p>Kullo relies on a strong public key algorithm from the open source software openSSL that is widely spread and actively developed.</p>
                     <p><a class="btn" href="#">View details &raquo;</a></p>
                 </div>
                 <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <h2>FREE AND OPEN</h2>
+                    <p>It's an open infrastructure based on established web standards. There is no central company that controls all the communication. Everyone can become a messaging provider.
+Furthermore we want to have Kullo on every device possible and encourage the best app developers to build client software for it.</p>
                     <p><a class="btn" href="#">View details &raquo;</a></p>
                </div>
                 <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <h2>HUMAN AND FUN</h2>
+                    <p>Besides all that it is human and fun to use. Everything is based on your Kullo address and your password only. No key management, no configuration, no nothing.</p>
                     <p><a class="btn" href="#">View details &raquo;</a></p>
                 </div>
             </div>
@@ -100,7 +121,7 @@
             <hr>
 
             <footer>
-                <p>&copy; Company 2012</p>
+                <p>&copy; None-Company 2012</p>
             </footer>
 
         </div> <!-- /container -->
