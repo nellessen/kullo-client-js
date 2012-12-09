@@ -1,5 +1,10 @@
 /**
- * Main class.
+ * This is the Kullo Javascript Library providing a high-level API for
+ * all the crypto-related stuff in Kullo.
+ */
+
+/**
+ * This is the main class providing all the API methods.
  * 
  * All class member numbers are decimal!
  */
