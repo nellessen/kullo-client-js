@@ -1,6 +1,6 @@
 function KulloUI() {
     // Class members.
-    this.server = "https://dev.kullo.net:3546/"; // @todo: Don't hardcode this.
+    this.server = null;
     this.sid = null;
     this.user = null;
     this.kullo = null;
@@ -13,6 +13,7 @@ function KulloUI() {
     this.init = function() {
         // Create a new Kullo instance.
         this.kullo = new Kullo();
+        
         // Example data.
         // @todo: Should be removed at some point.
         var public_key = {
@@ -23,11 +24,11 @@ function KulloUI() {
           "N": parseBigInt("9690c1ba8939eda38966578738baa7ff79d5a7f08bfcb4faedd58a2dc332cd106f36d69a0754acf9f0b019db49d7188f1b8fd8e2fa4eccdb086beb23e0d4d74527653c38d251c4a2bd4fb4419062f3604b055f16d2260246d349590e110f5d3d64624e5496355d7f896761a5559df33117d580ba8403d8d16cd554a5eb7334af340a9e5090e9e6694e86c7d9b318fb9c5950a74ed4cbcb77cb88ec9edf8b1ab63f6b64a13dcf719eace2a2abde1ed1cd3d37579ba32ff3a340fa95ec528d93bd", 16),
           "d": parseBigInt("66a7270e10c547f9f991a717705c02723214b33d5393e5a8374321c475934b306b42ce2991d9ef5d30f63f8abcdb43c93e1762ddcd9eb0189db3464bdddbff310cdcfea416f0dcc9bf9c79df419bd526cfbf47c77d5ba0adbd1c02f58e38156ed5d1f1318e6b50abe7438dfc673f33331c8eec3aaa46ae8f1cce86a758cdb3f69509db0eb405bb7eba3e8ce6ea0036acf4c4f6e7596542dcbc880b469fb82ba56b15b70c1f1de6f7259b07465e4ff9016b2efe67d44e5a9d35fe05009903aa81", 16)
         };
-        
         this.kullo.private_key = private_key;
         this.kullo.public_key = public_key;
         // AES keys can be random.
         this.kullo.generate_aes_keys();
+        this.server = "https://dev.kullo.net:3546/";
         
         // Make this in callback available.
         that = this;
@@ -388,7 +389,7 @@ $(document).ready(function() {
     if (!window.console) window.console = {};
     if (!window.console.log) window.console.log = function() {};
     
-    // Create Kullo and KulloUI instances.
+    // Create KulloUI instance.
     ui = new KulloUI();
     ui.init();
     
