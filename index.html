@@ -19,10 +19,12 @@
         </style>
         <link rel="stylesheet" href="initializr/css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="initializr/css/main.css">
+        
+        <link rel="stylesheet" href="libs/itpoverlay/style.css">
 
         <script src="initializr/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
-    <body>
+    <body id="body">
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
@@ -41,11 +43,11 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active" id="nav-home"><a href="#">Home</a></li>
-                            <li><a href="http://www.kullo.org/" target="_blank" >Kullo.org</a></li>
                             <li disabled="disabled" id="nav-logout" style="display: none; "><a href="#">Logout</a></li>
                             <li disabled="disabled" id="nav-compose" style="display: none; "><a href="#">Compose</a></li>
                             <li disabled="disabled" id="nav-inbox" style="display: none; "><a href="#">Inbox</a></li>
                             <li disabled="disabled" id="nav-generate" style="display: none; "><a href="#">Generate Keys</a></li>
+                            <li><a href="http://www.kullo.org/" target="_blank" >Kullo.org</a></li>
                         </ul>
                         <form id="login-form" class="navbar-form pull-right">
                             <input class="span2 address" type="text" placeholder="Kullo Address" value="davidn!kullo.net">
@@ -56,71 +58,74 @@
                 </div>
             </div>
         </div>
-        
-        
-        <div class="container page" id="page-inbox">
-            <h2>Inbox</h2>
-            <ul id="inbox">
-            
-            </ul>
-        </div>
-        
-        
-        <div class="container page" id="page-compose">
-        
-          <form class="bs-docs-example" id="compose-form">
-              <fieldset>
-                <legend>Recipient</legend><br>
-                <input value="davidn!kullo.net" class="recipient" name="recipient" type="text" placeholder="Kullo Address… (name!server.net)"  style="width: 90%;">
-                
-                <legend>Message</legend>
-                <textarea class="message" name="message" rows="10"  style="width: 90%;"></textarea>
-                
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="button" class="btn cancel">Cancel</button>
-                </div>
-              </fieldset>
-            </form>
-        
-        </div>
 
-        <div class="container page" id="page-home">
-
-            <!-- Main hero unit for a primary marketing message or call to action -->
-            <div class="hero-unit clearfix">
-                <a href="http://www.kullo.org/" target="_blank" class="thumbnail pull-right">
-                  <img src="http://kullo.webblock.org/files/2012/12/KulloLetter.svg" alt="Encrypted Letter" style="width: 262px; height: 276px;" />
-                </a>
-                <h1>Kullo Messaging Client</h1>
-                <p>Kullo provides secure and easy-to-use messaging. You can use it as an alternative to E-Mail, chat and other (instant) messengers if data security is important to you.</p>
-                <p><a class="btn btn-primary btn-large" href="http://www.kullo.org/" target="_blank">Learn more &raquo;</a></p>
-            </div>
-
-            <!-- Example row of columns -->
-            <div class="row">
-                <div class="span4">
-                    <h2>STRONG ENCRYPTION</h2>
-                    <p>Kullo relies on a strong public key algorithm from the open source software openSSL that is widely spread and actively developed.</p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
+        <div class="container" id="content-container">
+        
+            <div class="page" id="page-home">
+                <!-- Main hero unit for a primary marketing message or call to action -->
+                <div class="hero-unit clearfix">
+                    <a href="http://www.kullo.org/" target="_blank" class="thumbnail pull-right">
+                      <img src="http://kullo.webblock.org/files/2012/12/KulloLetter.svg" alt="Encrypted Letter" style="width: 262px; height: 276px;" />
+                    </a>
+                    <h1>Kullo Messaging Client</h1>
+                    <p>Kullo provides secure and easy-to-use messaging. You can use it as an alternative to E-Mail, chat and other (instant) messengers if data security is important to you.</p>
+                    <p><a class="btn btn-primary btn-large" href="http://www.kullo.org/" target="_blank">Learn more &raquo;</a></p>
                 </div>
-                <div class="span4">
-                    <h2>FREE AND OPEN</h2>
-                    <p>It's an open infrastructure based on established web standards. There is no central company that controls all the communication. Everyone can become a messaging provider.
-Furthermore we want to have Kullo on every device possible and encourage the best app developers to build client software for it.</p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
-               </div>
-                <div class="span4">
-                    <h2>HUMAN AND FUN</h2>
-                    <p>Besides all that it is human and fun to use. Everything is based on your Kullo address and your password only. No key management, no configuration, no nothing.</p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                <!-- Example row of columns -->
+                <div class="row">
+                    <div class="span4">
+                        <h2>STRONG ENCRYPTION</h2>
+                        <p>Kullo relies on a strong public key algorithm from the open source software openSSL that is widely spread and actively developed.</p>
+                        <p><a class="btn" href="#">View details &raquo;</a></p>
+                    </div>
+                    <div class="span4">
+                        <h2>FREE AND OPEN</h2>
+                        <p>It's an open infrastructure based on established web standards. There is no central company that controls all the communication. Everyone can become a messaging provider.
+    Furthermore we want to have Kullo on every device possible and encourage the best app developers to build client software for it.</p>
+                        <p><a class="btn" href="#">View details &raquo;</a></p>
+                   </div>
+                    <div class="span4">
+                        <h2>HUMAN AND FUN</h2>
+                        <p>Besides all that it is human and fun to use. Everything is based on your Kullo address and your password only. No key management, no configuration, no nothing.</p>
+                        <p><a class="btn" href="#">View details &raquo;</a></p>
+                    </div>
                 </div>
-            </div>
+            </div> <!-- /#page-home -->
+        
+        
+            <div class="page" id="page-inbox">
+                <h2>Inbox</h2>
+                <ul id="inbox">
+                </ul>
+            </div> <!-- /#page-inbox -->
+        
+        
+            <div class="page" id="page-compose">
+              <form class="bs-docs-example" id="compose-form">
+                  <h2>Compose</h2>
+                  <fieldset>
+                    <legend>Recipient</legend><br>
+                    <input value="davidn!kullo.net" class="recipient" name="recipient" type="text" placeholder="Kullo Address… (name!server.net)"  style="width: 90%;">
+                    
+                    <legend>Message</legend>
+                    <textarea class="message" name="message" rows="10"  style="width: 90%;"></textarea>
+                    
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="button" class="btn cancel">Cancel</button>
+                    </div>
+                  </fieldset>
+                </form>
+            </div>  <!-- /#page-compose -->
 
             <hr>
 
             <footer>
-                <p>&copy; None-Company 2012</p>
+                <p>
+                  About Kullo:
+                  <a href="https://www.facebook.com/kulloproject" target="_blank">Kullo on Facebook</a> | 
+                  <a href="http://www.kullo.org" target="_blank">Kullo.org</a>
+                </p>
             </footer>
 
         </div> <!-- /container -->
@@ -141,7 +146,9 @@ Furthermore we want to have Kullo on every device possible and encourage the bes
         <script src="libs/cryptojs/rollups/sha1.js"></script>
         <script src="libs/cryptojs/rollups/aes.js"></script>
         
+        <script src="libs/itpoverlay/itpoverlay.js"></script>
+        
         <script src="kullo.js"></script>
-        <script src="client.js"></script>
+        <script src="kullo-ui.js"></script>
     </body>
 </html>
